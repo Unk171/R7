@@ -4,61 +4,59 @@ import path from "path";
 
 const __dirname = path.resolve();
 
-
 inquirer.prompt([
     {
         type: "input",
         name: "title",
-        message: "What is the title of your project?"
+        message: "What is the title of your project? \n"
     },
     {
         type: "input",
         name: "description",
-        message: "Please provide a short description of your project."
+        message: "Please provide a short description of your project. \n"
     },
     {
         type: "input",
         name: "installation",
-        message: "What are the steps required to install your project?"
+        message: "What are the steps required to install your project? \n"
     },
     {
         type: "input",
         name: "usage",
-        message: "Provide instructions and examples for use."
+        message: "Provide instructions and examples for use. \n"
     },
     {
         type: "confirm",
         name: "screenshot",
-        message: "Do you have screenshots you would like to include?",
+        message: "Do you have screenshots you would like to include? \n",
         default: false
     },
     {
         type: "input",
         name: "screenshotPath",
-        message: "Please provide the path to your screenshot.",
+        message: "Please provide the path to your screenshot. \n",
         when: (answers) => answers.screenshot,
         validate: (value) => value ? true : "Please provide the path to your screenshot."
-
     },
     {
         type: "input",
         name: "credits",
-        message: "List your collaborators, if any, with links to their GitHub profiles."
+        message: "List your collaborators, if any, with links to their GitHub profiles. \n"
     },
     {
         type: "input",
         name: "features",
-        message: "If your project has a lot of features, list them here."
+        message: "If your project has a lot of features, list them here. \n"
     },
     {
         type: "input",
         name: "contribute",
-        message: "If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so."
+        message: "If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so. \n"
     },
     {
         type: "input",
         name: "tests",
-        message: "Provide examples for running tests."
+        message: "Provide examples for running tests. \n"
     },
     {
         type: "list",
@@ -98,7 +96,6 @@ ${description}
 
 ## Table of Contents (Optional)
 
-
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
@@ -117,11 +114,9 @@ ${usage}
 
    ${screenshotSection}
 
-
 ## Credits
 
 ${credits}
-
 
 ## Features
 
