@@ -1,130 +1,135 @@
-const inquirer = require("inquirer");
+import inquirer from "inquirer";
+import fs from "fs";
 
 
-const readme = () => {
-
-    const prompts = new RegExp.Subject
-    return inquirer.prompt([
-        {
-            type: "input",
-            name: "title",
-            message: "What is the title of your project?"
-        },
 
 
+inquirer.prompt([
+    {
+        type: "input",
+        name: "title",
+        message: "What is the title of your project?"
+    },
+    {
+        type: "input",
+        name: "description",
+        message: "Please provide a short description of your project."
+    },
+    {
+        type: "input",
+        name: "installation",
+        message: "What are the steps required to install your project?"
+    },
+    {
+        type: "input",
+        name: "usage",
+        message: "Provide instructions and examples for use."
+    },
+    {
+        type: "confirm",
+        name: "screenshot",
+        message: "Do you have screenshots you would like to include?",
+        default: false
+    },
+    {
+        type: "input",
+        name: "screenshotPath",
+        message: "Please provide the path to your screenshot.",
+        when: (answers) => answers.screenshot,
+        validate: (value) => value ? true : "Please provide the path to your screenshot."
+           
+    },
         {
-            type: "input",
-            name: "description",
-            message: "Please provide a short description of your project."
-        },
+        type: "input",
+        name: "credits",
+        message: "List your collaborators, if any, with links to their GitHub profiles."
+    },
+    {
+        type: "input",
+        name: "features",
+        message: "If your project has a lot of features, list them here."
+    },
+    {
+        type: "input",
+        name: "contribute",
+        message: "If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so."
+    },
+    {
+        type: "input",
+        name: "tests",
+        message: "Provide examples for running tests."
+    },
+    {
+        type: "list",
+        name: "license",
+        message: "What license would you like to use?",
+        choices: ["MIT", "Apache 2.0", "GPL", "LGPL", "BSD"]
+    }
+])
+.then(function (data) {
+    const readme = readmeTemplate(data);
+    console.log(readme);
 
-
-        {
-            type: "input",
-            name: "installation",
-            message: "What are the steps required to install your project?"
-        },
-        {
-            type: "input",
-            name: "usage",
-            message: "Provide instructions and examples for use."
-        },
-        {
-            type: "input",
-            name: "credits",
-            message: "List your collaborators, if any, with links to their GitHub profiles."
-        },
-        {
-            type: "input",
-            name: "license",
-            message: "What license would you like to use?"
-        },
-        {
-            type: "input",
-            name: "badges",
-            message: "Would you like to include any badges?"
-        },
-        {
-            type: "input",
-            name: "features",
-            message: "If your project has a lot of features, list them here."
-        },
-        {
-            type: "input",
-            name: "contribute",
-            message: "If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so."
-        },
-        {
-            type: "input",
-            name: "tests",
-            message: "If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so."
+    fs.writeFile("README.md", readme, function (err) {
+        if (err) {
+            return console.log(err);
         }
-    ])
-}
+        console.log("README.md has been created!");
+    });
+});
 
+function readmeTemplate({ title, description, installation, usage, credits, features, contribute, tests, license, screenshot, screenshotPath }) {
 
-`# <Your-Project-Title>
+    let screenshotSection = "";
+    if (screenshot && screenshotPath) {
+        screenshotSection = `![screenshot](${screenshotPath})`;
+    };
+    return `# ${title}
 
 ## Description
 
-Provide a short description explaining the what, why, and how of your project. Use the following questions as a guide:
-
-- What was your motivation?
-- Why did you build this project? (Note: the answer is not "Because it was a homework assignment.")
-- What problem does it solve?
-- What did you learn?
+${description}
 
 ## Table of Contents (Optional)
 
-If your README is long, add a table of contents to make it easy for users to find what they need.
 
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
+- [Features](#Features)
+- [How to Contribute](#How-to-Contribute)
+- [Tests](#Tests)
 - [License](#license)
 
 ## Installation
 
-What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running.
+${installation}
 
 ## Usage
 
-Provide instructions and examples for use. Include screenshots as needed.
+${usage}
 
-To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
+   ${screenshotSection}
 
-    ```md
-    ![alt text](assets/images/screenshot.png)
-    ```
 
 ## Credits
 
-List your collaborators, if any, with links to their GitHub profiles.
+${credits}
 
-If you used any third-party assets that require attribution, list the creators with links to their primary web presence in this section.
-
-If you followed tutorials, include links to those here as well.
-
-## License
-
-The last section of a high-quality README file is the license. This lets other developers know what they can and cannot do with your project. If you need help choosing a license, refer to [https://choosealicense.com/](https://choosealicense.com/).
-
----
-
-🏆 The previous sections are the bare minimum, and your project will ultimately determine the content of this document. You might also want to consider adding the following sections.
-
-## Badges
-
-![badmath](https://img.shields.io/github/languages/top/lernantino/badmath)
-
-Badges aren't necessary, per se, but they demonstrate street cred. Badges let other developers know that you know what you're doing. Check out the badges hosted by [shields.io](https://shields.io/). You may not understand what they all represent now, but you will in time.
 
 ## Features
 
-If your project has a lot of features, list them here.
+${features}
 
 ## How to Contribute
 
-If you created an application or package and would like other developers to contribute it, you can include guidelines for how to do so. The [Contributor Covenant](https://www.contributor-covenant.org/) is an industry standard, but you can always write your own if you'd prefer.
+${contribute}
 
-## Tests`
+## Tests
+
+${tests}
+
+## License
+
+${license}`
+}
