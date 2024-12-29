@@ -23,7 +23,7 @@ npm i
 
 Answer the questions
 
-   ![screenshot](./assets/images/screenshot.png)
+   ![screenshot](./assets/images/Screenshot.png)
 
 
 ## Credits
