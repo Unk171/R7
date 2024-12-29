@@ -1,7 +1,8 @@
 import inquirer from "inquirer";
 import fs from "fs";
+import path from "path";
 
-
+const __dirname = path.resolve();
 
 
 inquirer.prompt([
@@ -37,9 +38,9 @@ inquirer.prompt([
         message: "Please provide the path to your screenshot.",
         when: (answers) => answers.screenshot,
         validate: (value) => value ? true : "Please provide the path to your screenshot."
-           
+
     },
-        {
+    {
         type: "input",
         name: "credits",
         message: "List your collaborators, if any, with links to their GitHub profiles."
@@ -66,17 +67,22 @@ inquirer.prompt([
         choices: ["MIT", "Apache 2.0", "GPL", "LGPL", "BSD"]
     }
 ])
-.then(function (data) {
-    const readme = readmeTemplate(data);
-    console.log(readme);
+    .then(function (data) {
+        const dirPath = path.join(__dirname, data.title);
 
-    fs.writeFile("README.md", readme, function (err) {
-        if (err) {
-            return console.log(err);
+        if (!fs.existsSync(dirPath)) {
+            fs.mkdirSync(dirPath);
         }
-        console.log("README.md has been created!");
+
+        const readme = readmeTemplate(data);
+        console.log(readme);
+        fs.writeFile(path.join(dirPath, "README.md"), readme, function (err) {
+            if (err) {
+                return console.log(err);
+            }
+            console.log("README.md has been created!");
+        });
     });
-});
 
 function readmeTemplate({ title, description, installation, usage, credits, features, contribute, tests, license, screenshot, screenshotPath }) {
 
@@ -96,9 +102,9 @@ ${description}
 - [Installation](#installation)
 - [Usage](#usage)
 - [Credits](#credits)
-- [Features](#Features)
-- [How to Contribute](#How-to-Contribute)
-- [Tests](#Tests)
+- [Features](#features)
+- [How to Contribute](#how-to-contribute)
+- [Tests](#tests)
 - [License](#license)
 
 ## Installation
